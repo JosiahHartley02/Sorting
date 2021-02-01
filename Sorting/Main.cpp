@@ -35,21 +35,14 @@
 
 int main()
 {
-	//int loop;
-	//int* loopPtr = &loop;
-	////Create a new array
-	//int testArray[10] = { 3,5,1,2,6,8,9,0,7,4 };
-	////Print array
-	//for (int i = 0; i < 10; i++)
-	//	std::cout << testArray[i];
-	//std::cout << " " << std::endl;
-	//while (loop != 1)
-	//{
-	//	//Sort Array
-	//	*loopPtr = sortArray(testArray, 10) + 1;
-	//}
 	DynamicArray<int> intArr = DynamicArray<int>();
-	intArr.push(1);
-	intArr.push(2);
-	intArr.push(3);
+	intArr.addItem(5);
+	intArr.addItem(3);
+	intArr.addItem(3);
+	intArr.addItem(2);
+	intArr.addItem(2);
+	intArr.addItem(4);
+	intArr.removeItem(3);
+	intArr.sortItems();
+	intArr.print();
 }
