@@ -17,6 +17,29 @@ private:
 };
 
 template<typename T>
+class List
+{
+public:
+	List<T>();
+	~List<T>();
+};
+
+template<typename T>
+class Node
+{
+public:
+	Node<T>();
+	Node<T>(T value);
+};
+
+template<typename T>
+class Iterator
+{
+public:
+	Iterator<T>();
+};
+
+template<typename T>
 inline DynamicArray<T>::DynamicArray()
 {
 	m_items = nullptr;
