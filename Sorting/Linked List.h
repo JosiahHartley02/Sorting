@@ -34,7 +34,9 @@ public:
 	Node<T>();
 	Node<T>(T value);
 	Node<T>* Next();
+	void setNext(Node* node);
 	Node<T>* Previous();
+	void setPrevious(Node* node);
 	T Data();
 };
 
@@ -56,4 +58,184 @@ private:
 template<typename T>
 inline List<T>::List()
 {
+	m_head = nullptr;
+	m_tail = nullptr;
+	m_nodeCount = 0;
+}
+
+template<typename T>
+inline List<T>::List(List<T>&)
+{
+}
+
+template<typename T>
+inline List<T>::~List()
+{
+}
+
+template<typename T>
+inline void List<T>::destroy()
+{
+}
+
+template<typename T>
+inline Iterator<T> List<T>::begin()
+{
+	return Iterator<T>();
+}
+
+template<typename T>
+inline Iterator<T> List<T>::end()
+{
+	return Iterator<T>();
+}
+
+template<typename T>
+inline const bool List<T>::contains(const T object)
+{
+	return false;
+}
+
+template<typename T>
+inline void List<T>::pushFront(const T& value)
+{
+	m_head.Next
+}
+
+template<typename T>
+inline void List<T>::pushBack(const T& value)
+{
+}
+
+template<typename T>
+inline bool List<T>::insert(const T& value, int index)
+{
+	return false;
+}
+
+template<typename T>
+inline bool List<T>::remove(const T& value)
+{
+	return false;
+}
+
+template<typename T>
+inline void List<T>::print() const
+{
+}
+
+template<typename T>
+inline void List<T>::initialize()
+{
+}
+
+template<typename T>
+inline bool List<T>::isEmpty() const
+{
+	return false;
+}
+
+template<typename T>
+inline bool List<T>::getData(Iterator<T>& iter, int index)
+{
+	return false;
+}
+
+template<typename T>
+inline int List<T>::getLength() const
+{
+	return 0;
+}
+
+template<typename T>
+inline const List<T>& List<T>::operator=(const List<T>& otherList)
+{
+	// TODO: insert return statement here
+}
+
+template<typename T>
+inline void List<T>::sort()
+{
+}
+
+template<typename T>
+inline Node<T>::Node()
+{
+	data = nullptr;
+}
+
+template<typename T>
+inline Node<T>::Node(T value)
+{
+	data = value;
+}
+
+template<typename T>
+inline Node<T>* Node<T>::Next()
+{
+	return this->Next();
+}
+
+template<typename T>
+inline void Node<T>::setNext(Node* node)
+{
+	this->Next() = node;
+}
+
+template<typename T>
+inline Node<T>* Node<T>::Previous()
+{
+	return this->Previous();
+}
+
+template<typename T>
+inline void Node<T>::setPrevious(Node* node)
+{
+	this->Previous = node;
+}
+
+template<typename T>
+inline T Node<T>::Data()
+{
+	return this->Data();
+}
+
+template<typename T>
+inline Iterator<T>::Iterator()
+{
+}
+
+template<typename T>
+inline Iterator<T>::Iterator(Node<T>* node)
+{
+}
+
+template<typename T>
+inline Iterator<T> Iterator<T>::operator++()
+{
+	return Iterator<T>();
+}
+
+template<typename T>
+inline Iterator<T> Iterator<T>::operator--()
+{
+	return Iterator<T>();
+}
+
+template<typename T>
+inline const bool Iterator<T>::operator==(const Iterator<T>& iter)
+{
+	return false;
+}
+
+template<typename T>
+inline const bool Iterator<T>::operator!=(const Iterator<T>& iter)
+{
+	return false;
+}
+
+template<typename T>
+inline T Iterator<T>::operator*()
+{
+	return T();
 }
