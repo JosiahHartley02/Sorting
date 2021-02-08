@@ -99,12 +99,13 @@ inline const bool List<T>::contains(const T object)
 template<typename T>
 inline void List<T>::pushFront(const T& value)
 {
-	m_head.Next
+	
 }
 
 template<typename T>
 inline void List<T>::pushBack(const T& value)
 {
+
 }
 
 template<typename T>
