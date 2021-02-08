@@ -22,6 +22,9 @@ class List
 public:
 	List<T>();
 	~List<T>();
+private:
+	Node m_nodes[];
+	Iterator pointer;
 };
 
 template<typename T>
@@ -30,6 +33,9 @@ class Node
 public:
 	Node<T>();
 	Node<T>(T value);
+private:
+	T* m_nextNode;
+	T data;
 };
 
 template<typename T>
@@ -136,4 +142,15 @@ inline void DynamicArray<T>::print()
 {
 	for (int i = 0; i < getLength(); i++)
 		std::cout << m_items[i] << std::endl;
+}
+
+template<typename T>
+inline List<T>::List()
+{
+}
+
+template<typename T>
+inline List<T>::~List()
+{
+	delete m_nodes;
 }
