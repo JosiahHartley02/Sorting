@@ -22,9 +22,11 @@ class List
 public:
 	List<T>();
 	~List<T>();
-private:
+	void pushFront(T value);
+	bool insertAfter(T node, T value);
 	Node m_nodes[];
-	Iterator pointer;
+	Iterator m_pointer;
+	int m_length = 0;
 };
 
 template<typename T>
@@ -153,4 +155,39 @@ template<typename T>
 inline List<T>::~List()
 {
 	delete m_nodes;
+}
+
+template<typename T>
+inline void List<T>::pushFront(T value)
+{
+	T tempArr[m_length + 1];
+	for (int i = 0; i < m_length; i++)
+		tempArr[i] = &Nodes[i];
+	m_length++;
+	tempArr[m_length] = value;
+	&Nodes = tempArr;
+}
+
+template<typename T>
+inline bool List<T>::insertAfter(T node, T value)
+{
+	int counter = 0;
+	T tempArr[m_length + 1];
+	for (int i = 0; i < m_length; i++;)
+	{
+		if (m_nodes[i] = node
+			{
+				for (int i = 0; i < counter; i++)
+					tempArr[i] = &Nodes[i];
+			tempArr[counter] = value;
+			}
+			counter++;
+	}
+}
+
+template<typename T>
+inline Node<T>::Node()
+{
+	data = nullptr;
+	m_nextNode = nullptr;
 }
