@@ -116,21 +116,45 @@ inline bool List<T>::getData(Iterator<T>& iter, int index)
 template<typename T>
 inline void List<T>::sort()
 {
-	//for each item in the list
-	//see if the next item is larger
-    //if it is, swap
-	//should loop until no changes are made
+	//Create an iterator to point to the first node
 	Iterator<T> compare = new Iterator<T>(begin());
+	//Create an iterator to point to the second node
 	Iterator<T> to = new Iterator<T>(++begin());
+	//have a modifyable bool to tell us when the list has been sorted
 	bool somethingSwapped = true;
+	//Until the list is sorted
 	while (somethingSwapped)
 	{
+		//Compare the first node to the rest of the nodes
 		for (int i = 0; i < m_nodeCount; i++)
 		{
+			//until something is swapped, this function should exit when 
+			somethingSwapped = false;
+			//starting with the last node until we are at the first nodes next
 			for (int j = m_nodeCount; j < i + 1; i--)
 			{
-
+				//compare to see if the first node is bigger than the node being compared
+				if (compare.current->data > to.current->data)
+				{
+					//Change the first nodes next to be the comparison nodes next
+					compare.current->next = to.current->next;
+					//Change the comparison node's previous to be the first nodes previous;
+					to.current->previous = compare.current->previous;
+					//Change the first nodes previous to be the comparison node
+					compare.current->previous = to.current;
+					//Change the comparisons nodes next to be the first node
+					to.current->next = compare.current;
+					//Since we made a change we have to specify or else the loop wont function
+					somethingSwapped = true;
+				}
+				//after the nodes are compared, set the to iterator to be the previous of the current
+				--to;
+				//if nothing changed during that loop, then the list is in order
+				somethingSwapped = false;
+				return;
 			};
+			//once looped through the entire list of nodes, start comparing the second node to the rest of the nodes
+			++compare;
 		};
 	};
 }
