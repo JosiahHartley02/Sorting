@@ -43,48 +43,59 @@ public:
 	void sort();
 private:
 	//The node at the start of the list
-	Node<T> m_head;
+	Node<T> m_head = NULL;
 	//The node at the end of the list
-	Node<T> m_tail;
+	Node<T> m_tail = NULL;
 	//The quantity of Nodes in the list
-	int m_nodeCount;
+	int m_nodeCount = 0;
 };
-
-template<typename T>
-inline List<T>::List()
-{
-	Node<T> nullNode = new Node<T>()
-	m_head = nullptr;
-	m_tail = nullptr;
-	m_nodeCount = 0;
-}
 
 template<typename T>
 inline void List<T>::destroy()
 {	
 	//loop through length of Nodes
-	for (int i = 0; i < m_nodeCount; i++)
-		~begin().current->previous+i;  //delete what the iterator is pointing at, it is pointing at the 2nd node's previous, which is the 1st node.
+	for (int i = 0; i <= m_nodeCount; i++)
+	{
+		//Uses the begin iterator to iterate to the next node, and then delete the node previous to it
+		begin()++;
+		~begin().current->previous;
+	}		
 }
 
 template<typename T>
 inline const void List<T>::print()
 {
-	std::cout << 
+	//Create a new iterator pointing to the first node, which begin already does
+	Iterator<T> iterate = new Iterator<T>(begin());
+	//Loops through the list of nodes for the length of how many nodes there are
+	for (int i = 0; i < m_nodeCount; i++)
+	{
+		//prints the data at the current node in the list
+		std::cout << iterate.current->data;
+		//points the iterator at the next node to be looped
+		iterate++;
+	}
+	//once done, need to delete the iterator
+	~iterate;
 	return void();
 }
 
 template<typename T>
 inline void List<T>::initialize()
 {
-	m_head = nullptr;
-	m_tail = nullptr;
+	//Create an empty null node for convienience
+	Node<T> nullNode = new Node<T>();
+	//this new null node is both the head and tail of the list
+	m_head = nullNode;
+	m_tail = nullNode;
+	//this node is null and not counted
 	m_nodeCount = 0;
 }
 
 template<typename T>
 inline const bool List<T>::isEmpty()
 {
+	//Checks for obvious signs of an empty list
 	if (m_nodeCount == 0 || (m_head == nullptr && m_tail == nullptr))
 		return true;
 }
@@ -92,12 +103,16 @@ inline const bool List<T>::isEmpty()
 template<typename T>
 inline bool List<T>::getData(Iterator<T>& iter, int index)
 {
+	//checks to see if index is in range before we look
 	if (index > m_nodeCount)
 		return false;
+	//until we get to the index requested, set the iterator's next to be its current as to increment
 	for (int i = 0; i < index; i++)
 		iter++;
+	//once the iterator is on the desired node, return the data stored inside said node
 	return iter.current->data;
 }
+
 template<typename T>
 inline void List<T>::sort()
 {
@@ -113,29 +128,62 @@ inline void List<T>::sort()
 template<typename T>
 inline List<T>::List(const List<T>& other)
 {
+	//Create a new iterator to loop through the list starting with the first node
+	Iterator<T> copy = new Iterator<T>(begin());
+	//while we have not iterated through the length of the list that we are copying
+	for (int i = 0; i < other.m_nodeCount; i++)
+	{
+		//create a new node with the same data as the node in the same index of the other list
+		Node<T> newData = new Node<T>(copy.current);
+		//place the new node in our new list
+		pushFront(newData);
+	}
 }
 
 template<typename T>
 inline const List<T>& List<T>::operator=(const List<T>& otherList)
 {
-	
+	//Create a new iterator to loop through the list starting with the first node
+	Iterator<T> copy = new Iterator<T>(begin());
+	//while we have not iterated through the length of the list that we are copying
+	for (int i = 0; i < other.m_nodeCount; i++)
+	{
+		//create a new node with the same data as the node in the same index of the other list
+		Node<T> newData = new Node<T>(copy.current);
+		//place the new node in our new list
+		pushFront(newData);
+	}
 }
 
 template<typename T>
 inline const Iterator<T> List<T>::begin()
 {
+	//This Iterator just points to the head of the list
 	return Iterator<T>();
 }
 
 template<typename T>
 inline const Iterator<T> List<T>::end()
 {
+	//This Iterator just points to the end of the list
 	return Iterator<T>();
 }
 
 template<typename T>
 inline const bool List<T>::contains(const T object)
 {
+	//New Iterator to iterate through our list
+	Iterator<T> iterate = new Iterator<T>(begin());
+	//Loop for potentially the entire length of the list
+	for (int i = 0; i < m_nodeCount; i++)
+	{
+		//check to see if the current node being pointed at has data matching what we're looking for
+		if (iterate.current->data == object)
+			return true;
+		//Have the iterator point to the next node
+		iterate++;
+	}
+	//if the function has made it this far, no object was found in the list
 	return false;
 }
 
@@ -145,9 +193,9 @@ inline void List<T>::pushFront(const T& value)
 	//need to insert a new node of type T value
 	Node<T> newNode = new Node<T>(value);
 	//set the new nodes next node to be the current first node
-	newNode.next = begin().current;
+	newNode.next = m_head;
 	//set the old first node's previous equal to the new first node
-	begin().current->previous = newNode;
+	m_head.previous = newNode;
 	//Move the begin iterator back to the first node
 	begin()--;
 
@@ -156,6 +204,14 @@ inline void List<T>::pushFront(const T& value)
 template<typename T>
 inline void List<T>::pushBack(const T& value)
 {
+	//need to insert a new node of type T value
+	Node<T> newNode = new Node<T>(value);
+	//This new node will go after the tail so this becomes the tails next
+	newNode = m_tail.next;
+	//We also have to set this nodes previous equal to the old tail
+	newNode.previous = m_tail;
+	//We now update the tail pointer so its pointing to this new node
+	end()++;
 }
 
 template<typename T>
