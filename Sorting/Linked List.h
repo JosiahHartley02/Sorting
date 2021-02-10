@@ -1,43 +1,13 @@
 #pragma once
 template<typename T>
-class List
-{
-public:
-	List();
-	List(List<T>&);
-	~List();
-	void destroy();
-	Iterator<T> begin();
-	Iterator<T> end();
-	const bool contains(const T object);
-	void pushFront(const T& value);
-	void pushBack(const T& value);
-	bool insert(const T& value, int index);
-	bool remove(const T& value);
-	void print() const;
-	void initialize();
-	bool isEmpty() const;
-	bool getData(Iterator<T>& iter, int index);
-	int getLength() const;
-	const List<T>& operator = (const List<T>& otherList);
-	void sort();
-private:
-	Node<T> m_head;
-	Node<T> m_tail;
-	int m_nodeCount;
-};
-
-template<typename T>
 class Node
 {
 public:
 	Node<T>();
 	Node<T>(T value);
-	Node<T>* Next();
-	void setNext(Node* node);
-	Node<T>* Previous();
-	void setPrevious(Node* node);
-	T Data();
+	Node<T>* next;
+	Node<T>* previous;
+	T data;
 };
 
 template<typename T>
@@ -56,16 +26,95 @@ private:
 };
 
 template<typename T>
+class List
+{
+public:
+	List() { initialize(); }
+	List(const List<T>& other) { copyList(other); };
+	~List() { destroy(); };
+	const List<T>& operator = (const List<T>& otherList);
+	Iterator<T> begin();
+	Iterator<T> end();
+	const bool contains(const T object);
+	void pushFront(const T& value);
+	void pushBack(const T& value);
+	bool insert(const T& value, int index);
+	bool remove(const T& value);
+	void destroy();
+	void print() const;
+	void initialize();
+	bool isEmpty() const;
+	bool getData(Iterator<T>& iter, int index);
+	int getLength() const;
+	void sort();
+private:
+	Node<T> m_head;
+	Node<T> m_tail;
+	int m_nodeCount;
+};
+
+template<typename T>
+inline Node<T>::Node()
+{
+	data = nullptr;
+	next = nullptr;
+	previous = nullptr;
+}
+
+template<typename T>
+inline Node<T>::Node(T value)
+{
+	data = value;
+	next = nullptr;
+	previous = nullptr;
+}
+
+template<typename T>
+inline Iterator<T>::Iterator()
+{
+}
+
+template<typename T>
+inline Iterator<T>::Iterator(Node<T>* node)
+{
+}
+
+template<typename T>
+inline Iterator<T> Iterator<T>::operator++()
+{
+	return Iterator<T>();
+}
+
+template<typename T>
+inline Iterator<T> Iterator<T>::operator--()
+{
+	return Iterator<T>();
+}
+
+template<typename T>
+inline const bool Iterator<T>::operator==(const Iterator<T>& iter)
+{
+	return false;
+}
+
+template<typename T>
+inline const bool Iterator<T>::operator!=(const Iterator<T>& iter)
+{
+	return false;
+}
+
+template<typename T>
+inline T Iterator<T>::operator*()
+{
+	return T();
+}
+
+template<typename T>
 inline List<T>::List()
 {
 	m_head = nullptr;
 	m_tail = nullptr;
 	m_nodeCount = 0;
-}
-
-template<typename T>
-inline List<T>::List(List<T>&)
-{
 }
 
 template<typename T>
@@ -99,7 +148,7 @@ inline const bool List<T>::contains(const T object)
 template<typename T>
 inline void List<T>::pushFront(const T& value)
 {
-	
+	m_head = value;
 }
 
 template<typename T>
@@ -157,86 +206,4 @@ inline const List<T>& List<T>::operator=(const List<T>& otherList)
 template<typename T>
 inline void List<T>::sort()
 {
-}
-
-template<typename T>
-inline Node<T>::Node()
-{
-	data = nullptr;
-}
-
-template<typename T>
-inline Node<T>::Node(T value)
-{
-	data = value;
-}
-
-template<typename T>
-inline Node<T>* Node<T>::Next()
-{
-	return this->Next();
-}
-
-template<typename T>
-inline void Node<T>::setNext(Node* node)
-{
-	this->Next() = node;
-}
-
-template<typename T>
-inline Node<T>* Node<T>::Previous()
-{
-	return this->Previous();
-}
-
-template<typename T>
-inline void Node<T>::setPrevious(Node* node)
-{
-	this->Previous = node;
-}
-
-template<typename T>
-inline T Node<T>::Data()
-{
-	return this->Data();
-}
-
-template<typename T>
-inline Iterator<T>::Iterator()
-{
-}
-
-template<typename T>
-inline Iterator<T>::Iterator(Node<T>* node)
-{
-}
-
-template<typename T>
-inline Iterator<T> Iterator<T>::operator++()
-{
-	return Iterator<T>();
-}
-
-template<typename T>
-inline Iterator<T> Iterator<T>::operator--()
-{
-	return Iterator<T>();
-}
-
-template<typename T>
-inline const bool Iterator<T>::operator==(const Iterator<T>& iter)
-{
-	return false;
-}
-
-template<typename T>
-inline const bool Iterator<T>::operator!=(const Iterator<T>& iter)
-{
-	return false;
-}
-
-template<typename T>
-inline T Iterator<T>::operator*()
-{
-	return T();
 }
