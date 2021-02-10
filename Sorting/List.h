@@ -217,11 +217,51 @@ inline void List<T>::pushBack(const T& value)
 template<typename T>
 inline bool List<T>::insert(const T& value, int index)
 {
-	return false;
+	//Fail This Function if index is out of range
+	if(index > m_nodeCount || index < 0)
+		return false;
+	//Create a new iterator to find the index requested
+	Iterator<T> seek = new Iterator<T>(begin());
+	//Place the iterator so that it points to the index requested
+	for (int i = 0; i < index; i++)
+		seek++;
+	//Create a new Node to go in said index
+	Node<T> newData = new Node<T>(value);
+	//Set this new Node to see the old Node that is now infront
+	newData.next = seek.current;
+	//Set the old node to see this new data behind it
+	seek.current->previous = newData;
+	//Delete the iterator it is no longer needed
+	~seek;
 }
 
 template<typename T>
 inline bool List<T>::remove(const T& value)
 {
-	return false;
+	//Fail This Function if index is out of range
+	if (index > m_nodeCount || index < 0)
+		return false;
+	//Create a new iterator to find the value requested
+	Iterator<T> seek = new Iterator<T>(begin());
+	//Find the value
+	for (int i = 0; i < m_nodeCount; i++)
+	{
+		//Test each nodes data to see if equal
+		if (seek.current->data != value)
+		{
+			//If not, increment to the next one
+			seek++;
+		}			
+		else //if it is, set the node previous and the node next to connect and delete the node
+		{
+			//set the previous node's next to be the next node
+			seek.current->previous->next = seek.current->next;
+			//set the next node's previous to be the previous node
+			seek.current->next->previous = seek.current->previous;
+			//Delete the node that seek is pointing to as it is no longer necessary
+			~*seek;
+		}
+	}
+	//Delete the iterator as it is no longer necessary
+	~seek;
 }
