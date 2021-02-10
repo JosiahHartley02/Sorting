@@ -73,7 +73,7 @@ inline const void List<T>::print()
 		//prints the data at the current node in the list
 		std::cout << iterate.current->data;
 		//points the iterator at the next node to be looped
-		iterate++;
+		++iterate;
 	}
 	//once done, need to delete the iterator
 	~iterate;
@@ -108,7 +108,7 @@ inline bool List<T>::getData(Iterator<T>& iter, int index)
 		return false;
 	//until we get to the index requested, set the iterator's next to be its current as to increment
 	for (int i = 0; i < index; i++)
-		iter++;
+		++iter;
 	//once the iterator is on the desired node, return the data stored inside said node
 	return iter.current->data;
 }
@@ -116,13 +116,23 @@ inline bool List<T>::getData(Iterator<T>& iter, int index)
 template<typename T>
 inline void List<T>::sort()
 {
-	//Iterator<T> sort = new Iterator();	
-	//for(int i = 0; i < m_nodeCount; i++)
-	//	for(int j = m_nodeCount; j < i + 1; i--)
-	//		if (getData(sort, j) < getData(sort, i))
-	//		{
-	//			Node<T> tempNode = sort.current;
-	//		}
+	//for each item in the list
+	//see if the next item is larger
+    //if it is, swap
+	//should loop until no changes are made
+	Iterator<T> compare = new Iterator<T>(begin());
+	Iterator<T> to = new Iterator<T>(++begin());
+	bool somethingSwapped = true;
+	while (somethingSwapped)
+	{
+		for (int i = 0; i < m_nodeCount; i++)
+		{
+			for (int j = m_nodeCount; j < i + 1; i--)
+			{
+
+			};
+		};
+	};
 }
 
 template<typename T>
@@ -152,6 +162,7 @@ inline const List<T>& List<T>::operator=(const List<T>& otherList)
 		Node<T> newData = new Node<T>(copy.current);
 		//place the new node in our new list
 		pushFront(newData);
+		m_nodeCount++;
 	}
 }
 
@@ -181,7 +192,7 @@ inline const bool List<T>::contains(const T object)
 		if (iterate.current->data == object)
 			return true;
 		//Have the iterator point to the next node
-		iterate++;
+		++iterate;
 	}
 	//if the function has made it this far, no object was found in the list
 	return false;
@@ -197,8 +208,9 @@ inline void List<T>::pushFront(const T& value)
 	//set the old first node's previous equal to the new first node
 	m_head.previous = newNode;
 	//Move the begin iterator back to the first node
-	begin()--;
-
+	--begin();
+	//Count the node that has been added
+	m_nodeCount++;
 }
 
 template<typename T>
@@ -211,7 +223,9 @@ inline void List<T>::pushBack(const T& value)
 	//We also have to set this nodes previous equal to the old tail
 	newNode.previous = m_tail;
 	//We now update the tail pointer so its pointing to this new node
-	end()++;
+	++end();
+	//Count the node that has been added
+	m_nodeCount++;
 }
 
 template<typename T>
@@ -224,7 +238,7 @@ inline bool List<T>::insert(const T& value, int index)
 	Iterator<T> seek = new Iterator<T>(begin());
 	//Place the iterator so that it points to the index requested
 	for (int i = 0; i < index; i++)
-		seek++;
+		++seek;
 	//Create a new Node to go in said index
 	Node<T> newData = new Node<T>(value);
 	//Set this new Node to see the old Node that is now infront
@@ -233,6 +247,8 @@ inline bool List<T>::insert(const T& value, int index)
 	seek.current->previous = newData;
 	//Delete the iterator it is no longer needed
 	~seek;
+	//Count the node that has been added
+	m_nodeCount++;
 }
 
 template<typename T>
@@ -250,7 +266,7 @@ inline bool List<T>::remove(const T& value)
 		if (seek.current->data != value)
 		{
 			//If not, increment to the next one
-			seek++;
+			++seek;
 		}			
 		else //if it is, set the node previous and the node next to connect and delete the node
 		{
@@ -264,4 +280,6 @@ inline bool List<T>::remove(const T& value)
 	}
 	//Delete the iterator as it is no longer necessary
 	~seek;
+	//Count the node that has been removed
+	m_nodeCount--;
 }
