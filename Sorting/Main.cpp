@@ -45,6 +45,8 @@ int main()
 	std::cout << "removed a 1" << std::endl;
 	intArr.remove(3);
 	std::cout << "removed a 3" << std::endl;
+	intArr.print();
 	intArr.sort();
 	std::cout << "list sorted" << std::endl;
+	intArr.print();
 }

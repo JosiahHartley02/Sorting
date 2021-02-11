@@ -116,9 +116,9 @@ template<typename T>
 inline void List<T>::sort()
 {
 	//Create an iterator to point to the first node
-	Iterator<T> compare = new Iterator<T>(begin());
+	Iterator<T>* compare = new Iterator<T>(begin());
 	//Create an iterator to point to the second node
-	Iterator<T> to = new Iterator<T>(++begin());
+	Iterator<T>* to = new Iterator<T>(begin().current->next);
 	//have a modifyable bool to tell us when the list has been sorted
 	bool somethingSwapped = true;
 	//Until the list is sorted
@@ -133,16 +133,16 @@ inline void List<T>::sort()
 			for (int j = m_nodeCount; j < i + 1; i--)
 			{
 				//compare to see if the first node is bigger than the node being compared
-				if (compare.current->data > to.current->data)
+				if (compare->current->data > to->current->data)
 				{
 					//Change the first nodes next to be the comparison nodes next
-					compare.current->next = to.current->next;
+					compare->current->next = to->current->next;
 					//Change the comparison node's previous to be the first nodes previous;
-					to.current->previous = compare.current->previous;
+					to->current->previous = compare->current->previous;
 					//Change the first nodes previous to be the comparison node
-					compare.current->previous = to.current;
+					compare->current->previous = to->current;
 					//Change the comparisons nodes next to be the first node
-					to.current->next = compare.current;
+					to->current->next = compare->current;
 					//Since we made a change we have to specify or else the loop wont function
 					somethingSwapped = true;
 				}
