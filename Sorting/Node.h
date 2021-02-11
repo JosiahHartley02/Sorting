@@ -20,11 +20,11 @@ template<typename T>
 inline Node<T>::Node()
 {
 	//since this node only holds position, it stores no data
-	data = nullptr;
+	data = NULL;
 	//the next node pointer is set to nullptr for initialization
-	next = nullptr;
+	next = NULL;
 	//the previous node pointer is set to nullptr for initialization
-	previous = nullptr;
+	previous = NULL;
 }
 //This node stores data of type T, and how to get to the nodes adjacent
 template<typename T>
