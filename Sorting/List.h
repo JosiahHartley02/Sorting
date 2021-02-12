@@ -53,28 +53,38 @@ private:
 template<typename T>
 inline void List<T>::destroy()
 {	
+	if (begin().current == nullptr)
+		return void();
+	Iterator<T>* pointer = new Iterator<T>(begin().current->next);
 	//loop through length of Nodes
-	for (int i = 1; i <= m_nodeCount; i++)
+	for (int i = 0; i <= m_nodeCount - 2; i++)
 	{
 		//Uses the begin iterator to iterate to the next node, and then delete the node previous to it		
-		delete begin().current->previous;
-	}		
+		delete pointer->current->previous;
+		pointer->current = pointer->current->next;
+	}	
+	m_head = pointer->current;
+	m_tail = pointer->current;
+	this->m_nodeCount = 0;
 }
 
 template<typename T>
 inline const void List<T>::print()
 {
+	if (m_nodeCount == 0)
+		return void();
 	//Create a new iterator pointing to the first node, which begin already does
 	Iterator<T>* iterate = new Iterator<T>(begin());
 	//Loops through the list of nodes for the length of how many nodes there are
 	for (int i = 0; i < m_nodeCount; i++)
 	{
-		//prints the data at the current node in the list
+		//prints the data at the current node in the list		
 		std::cout << iterate->current->data;
 		
 		//points the iterator at the next node to be looped
 		iterate->current = iterate->current->next;
 	}
+	std::cout << " " << std::endl;
 	//once done, need to delete the iterator
 	return void();
 }
@@ -115,47 +125,57 @@ inline bool List<T>::getData(Iterator<T>& iter, int index)
 template<typename T>
 inline void List<T>::sort()
 {
-	//Create an iterator to point to the first node
-	Iterator<T>* compare = new Iterator<T>(begin());
-	//Create an iterator to point to the second node
-	Iterator<T>* to = new Iterator<T>(begin().current->next);
-	//have a modifyable bool to tell us when the list has been sorted
+	if (m_nodeCount < 2)
+		return void();
+	//Create a pointer to point to the tail in the list
+	Iterator<T>* iteratorJ = new Iterator<T>(end());
+	//swapping for sorting is set to true to allow entry into the while loop
 	bool somethingSwapped = true;
-	//Until the list is sorted
+	//while something gets swapped in the loop, repeat the loop
 	while (somethingSwapped)
 	{
-		//Compare the first node to the rest of the nodes
-		for (int i = 0; i < m_nodeCount; i++)
+		//as of right now nothing has been swapped
+		somethingSwapped = false;
+		//for each item in the list
+		for (int i = 0; i < getLength(); i++)
 		{
-			//until something is swapped, this function should exit when 
-			somethingSwapped = false;
-			//starting with the last node until we are at the first nodes next
-			for (int j = m_nodeCount; j < i + 1; i--)
-			{
-				//compare to see if the first node is bigger than the node being compared
-				if (compare->current->data > to->current->data)
-				{
-					//Change the first nodes next to be the comparison nodes next
-					compare->current->next = to->current->next;
-					//Change the comparison node's previous to be the first nodes previous;
-					to->current->previous = compare->current->previous;
-					//Change the first nodes previous to be the comparison node
-					compare->current->previous = to->current;
-					//Change the comparisons nodes next to be the first node
-					to->current->next = compare->current;
-					//Since we made a change we have to specify or else the loop wont function
-					somethingSwapped = true;
-				}
-				//after the nodes are compared, set the to iterator to be the previous of the current
-				--to;
-				//if nothing changed during that loop, then the list is in order
-				somethingSwapped = false;
-				return;
-			};
-			//once looped through the entire list of nodes, start comparing the second node to the rest of the nodes
-			++compare;
-		};
-	};
+			//set the iterator to point to the tail
+			iteratorJ->current = end().current;
+			//this loop loops until the iterator faces the second node in the list
+			for (int j = getLength() - i; j > i; j--)
+				if (iteratorJ->current->previous != nullptr) //tests to see if the iterator is pointing at the head which has already been compared
+					if (iteratorJ->current->data < iteratorJ->current->previous->data) //sees if the data is smaller than the data before
+					{
+						//if the node after the iterators next node pointer is not null
+						if (iteratorJ->current->next->next != nullptr && iteratorJ->current->next != nullptr)
+							iteratorJ->current->next->previous = iteratorJ->current->previous; //set the next nodes previous to be the iterators previous
+						else
+							m_tail = iteratorJ->current->previous;
+						//if the previous nodes previous is not nullptr
+						if (iteratorJ->current->previous->previous != nullptr)
+							iteratorJ->current->previous->previous->next = iteratorJ->current; //then we set the previous node's previous node's next to be the current
+						else
+							m_head = iteratorJ->current; //if the previous nodes previous is nullptr then this new item is the new head
+						//set the next nodes previous to be the iterators previous
+						iteratorJ->current->next->previous = iteratorJ->current->previous;
+						//fights against head nodes previous being bull
+						if(iteratorJ->current->previous->previous != nullptr)
+							iteratorJ->current->previous->previous->next = iteratorJ->current; //set the node to be swapped's previous nodes next to be this iterator
+						//set the node to be swapped next to be this iterators next
+						iteratorJ->current->previous->next = iteratorJ->current->next;
+						//set this iterators next node to be the node to be swapped
+						iteratorJ->current->next = iteratorJ->current->previous;
+						//set the iterators previous to be the node to be swapped previous
+						iteratorJ->current->previous = iteratorJ->current->previous->previous;
+						//set the node to be swapped previous to be this iterator
+						iteratorJ->current->next->previous = iteratorJ->current;
+						//if we got here then a swap was made
+						somethingSwapped = true;
+					}
+					else //if we got here then the swap was not made and we need to check the next two nodes
+						iteratorJ->current = iteratorJ->current->previous;
+		}
+	}
 }
 
 template<typename T>
@@ -224,12 +244,16 @@ inline void List<T>::pushFront(const T& value)
 {
 	//need to insert a new node of type T value
 	Node<T>* newNode = new Node<T>(value);
+	if (this->m_head == nullptr)
+		m_head = newNode;
 	//place the new node behind the head node
 	m_head->previous = newNode;
 	//place the head node in front of the new node
 	newNode->next = m_head;
 	//set the head node to this node
 	m_head = newNode;
+	if (m_nodeCount == 0)
+		m_tail = newNode;
 	//increment number of nodes
 	m_nodeCount++;
 }
@@ -311,7 +335,10 @@ inline bool List<T>::remove(const T& value)
 		else //if it is, set the node previous and the node next to connect and delete the node
 		{
 			//set the previous nodes next to be this nodes next
-			seek->current->previous->next = seek->current->next;
+			if (seek->current->previous != nullptr)
+				seek->current->previous->next = seek->current->next;
+			else
+				m_head = seek->current->next;
 			//set the next nodes previous to be this nodes previous
 			if(seek->current->next != nullptr)
 				seek->current->next->previous = seek->current->previous;
