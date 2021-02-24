@@ -45,5 +45,9 @@ int main()
 	intArr.print();
 	intArr.pushFront(2);
 	intArr.print();	
+	intArr.pushBack(1);
+	intArr.print();
+	intArr.pushBack(3);
+	intArr.print();
 	system("pause");
 }
