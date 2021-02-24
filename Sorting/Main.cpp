@@ -19,24 +19,31 @@ int main()
 	
 	List<int> intArr = List<int>();
 	intArr.pushFront(1);
+	intArr.print();
 	intArr.pushFront(2);
+	intArr.print();
 	intArr.pushFront(3);
+	intArr.print();
 	intArr.pushFront(4);
+	intArr.print();
 	intArr.pushFront(5);
+	intArr.print();
 	intArr.pushFront(6);
 	intArr.print();
 	intArr.sort();
 	intArr.print();
-	intArr.print();
 	intArr.sort();
 	intArr.print();
 	intArr.insert(7, 3);
+	intArr.print();
 	intArr.sort();
 	intArr.print();
-	intArr.pushBack(8);
-	if (intArr.contains(8))
-		intArr.~List();
+	if (!intArr.contains(8))
+		intArr.pushBack(8);
+	intArr.print();
+	intArr.~List();
 	intArr.print();
 	intArr.pushFront(2);
 	intArr.print();	
+	system("pause");
 }
